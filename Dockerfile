@@ -16,8 +16,7 @@ COPY . /code
 COPY custom-php.ini /usr/local/etc/php/conf.d/
 
 # Copier la configuration Supervisor
-    # COPY supervisord.conf /etc/supervisord.conf
-    # COPY supervisord.d/ /etc/supervisord.d/
+  
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Définir le répertoire de travail
@@ -29,6 +28,7 @@ EXPOSE 9000
 # Changer le propriétaire des fichiers de code
 RUN chown -R monprof:monprof /code
 
+CMD
 # Démarrer PHP-FPM et Supervisor
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 # CMD ["php-fpm"]

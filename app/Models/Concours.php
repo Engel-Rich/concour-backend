@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Concours extends Model
 {
@@ -21,8 +22,8 @@ class Concours extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function abonnements(): HasMany
+    public function abonnement(): HasOne
     {
-        return $this->hasMany(Abonnements::class, 'concours_id');
+        return $this->hasOne(Abonnements::class, 'concours_id');
     }
 }

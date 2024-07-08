@@ -23,7 +23,7 @@ class ApiResponseControlller extends Controller
     * return error response
     */
 
-    public function returnError(Exception $exception, $message="Une erreur s'est produite", $code=400)
+    public function returnError(\Throwable $exception, $message="Une erreur s'est produite", $code=400)
     {
         $error=null;
         if ($exception->getCode()==422) {            

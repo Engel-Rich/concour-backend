@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Cours\StoreCoursRequest;
 use App\Http\Requests\Cours\UpdateCoursRequest;
+use App\Models\Abonnements;
+use App\Models\Concours;
 use App\Models\Matiere;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -23,12 +25,25 @@ class CoursController extends ApiResponseControlller
     public function index(Request $request)
     {
         try {
-            $request->validate(['matiere_id', 'nullable|exists:matieres,id|integer']);
+            $isAdmin = $request->user()->rule_id==1;
+            $request->validate(['matiere_id'=> 'nullable|exists:matieres,id|integer']);
+            if(!$isAdmin){
+                $request->validate(['matiere_id'=> 'required|exists:matieres,id|integer','concour_id'=> 'required|exists:concours,id|integer']);
+            }
+           
+
             if ($request->has('matiere_id')) {
-                $matiere = Matiere::find('matiere_id');
-                $concoursList = $matiere->cours()->paginate(perPage: $request->per_page ?? 25, page: $request->page ?? 1);
-                // return $this->returnSucces($concoursList);
-                $result = $concoursList->getCollection()->transform( function ($cour) use ($matiere ){
+                $matiere = Matiere::find( $request-> matiere_id);
+                $concoursList = $matiere->cours()->paginate(perPage: $request->per_page ?? 25, page: $request->page ?? 1);               
+                $result = $concoursList->getCollection()->transform( function ($cour) use ($matiere, $request, $isAdmin){
+                   
+                    if($request->has('concour_id') && !$isAdmin){
+                        $abonnement = Abonnements::where('user_id',$request->user()->id)->where('concours_id',$request->concour_id) ?->first();
+                        Log::info($abonnement);
+                        if($abonnement != null && $abonnement->status == 'USING'){
+                            $cour->public = true;                                         
+                        }  else $cour->public = $cour->public==0? false:true;                     
+                    }
                     $cour->image = $cour->image? Storage::disk('public')->url($cour->image):null;  
                     $cour->video = Storage::disk('public')->url('Videos/'.$matiere->libelle.'/'. $cour->video);
                     return $cour;
