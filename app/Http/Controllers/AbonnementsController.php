@@ -30,7 +30,7 @@ class AbonnementsController extends ApiResponseControlller
         $abonnements =  Abonnements::with('code', 'user')-> paginate(25, page: $request->page ?? 1);
        }else{
         $userModel = User::find($user->id);
-        $abonnements = $userModel->abonnements()->paginate();
+        $abonnements = $userModel->abonnements()->with('concour')-> paginate();
        }
     return $this->returnSucces($abonnements);
     } catch (\Throwable $th) {
@@ -55,7 +55,7 @@ class AbonnementsController extends ApiResponseControlller
             $datas = $request->validated();
         $datas['user_id'] = $request->user()->id;
         $result = Abonnements::create($datas);
-        return  $this->returnSucces($result);
+        return  $this->returnSucces(Abonnements::with('concour')->find($result->id));
         } catch (\Throwable $th) {
             return $this->returnError($th);
         }

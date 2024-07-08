@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Matieres\StoreMatiereRequest;
 use App\Http\Requests\Matieres\UpdateConcoursRequest;
+use App\Models\Abonnements;
 use App\Models\Concours;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -21,11 +22,15 @@ class ConcoursController extends ApiResponseControlller
 
     public function index(Request $request){
         try {
-            $concoursList = Concours:: paginate(perPage: $request->per_page??25, page: $request->page??1);
-            $result = $concoursList->getCollection()->transform(function ($matiere){                
-                $matiere->image = $matiere->image? Storage::disk('public')->url($matiere->image):null;                              
+            $concoursList = Concours::with('matieres')-> paginate(perPage: $request->per_page??25, page: $request->page??1);
+            $result = $concoursList->getCollection()->transform(function ($matiere) use($request) {                
+                $matiere->image = $matiere->image? Storage::disk('public')->url($matiere->image):null;  
+                $abonnement = Abonnements::where('concours_id',$matiere->id)->where('user_id',$request->user()->id);                
+                $matiere->status = $abonnement?->first()?->status?? 'None';                          
+                
                 return $matiere;
             });
+            // Log::info($concoursList->setCollection($result)[0]);  
             return $this->returnSucces($concoursList->setCollection($result));
 
         } catch (\Throwable $th) {
@@ -52,14 +57,15 @@ class ConcoursController extends ApiResponseControlller
     public function addMatiereToConcours(Request $request){
         try {
             $request->validate([
-                'concour_id'=> 'integer|exists:cours,id|required',
+                'concour_id'=> 'integer|exists:concours,id|required',
                 'matiere_id'=> 'integer|exists:matieres,id|required'
             ]);
-            
-            $concour =  Concours::find($request->concour_id);
+        
+            $concour =  Concours::findOrFail($request->concour_id);
             $concour->matieres()->attach($request->matiere_id);
             return $this->returnSucces(true);
-        } catch (\Throwable $th) {
+        } 
+        catch (\Throwable $th) {
             Log::info($th->getMessage());
             require $this->returnError($th);
         }

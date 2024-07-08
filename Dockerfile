@@ -28,6 +28,7 @@ EXPOSE 9000
 # Changer le propriétaire des fichiers de code
 RUN chown -R monprof:monprof /code
 
+CMD
 # Démarrer PHP-FPM et Supervisor
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 # CMD ["php-fpm"]
