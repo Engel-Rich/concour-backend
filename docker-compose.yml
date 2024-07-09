@@ -18,11 +18,11 @@ services:
             - ./:/code
         environment:
             - DB_CONNECTION=mysql
-            - DB_HOST=host.docker.internal
+            - DB_HOST=194.163.141.34
             - DB_PORT=3306
             - DB_DATABASE=concours
-            - DB_USERNAME=engelbert
-            - DB_PASSWORD=root
+            - DB_USERNAME=richelieu
+            - DB_PASSWORD=Azerty@123
         expose:
             - 9000
     phpmyadmin:
@@ -32,9 +32,9 @@ services:
             - 8000:80
         environment:
             - PMA_ARBITRARY=1
-            - PMA_HOST=host.docker.internal
-            - PMA_USER=engelbert
-            - PMA_PASSWORD=root
+            - PMA_HOST=194.163.141.34
+            - PMA_USER=richelieu
+            - PMA_PASSWORD=Azerty@123
         depends_on:
             - php
         
