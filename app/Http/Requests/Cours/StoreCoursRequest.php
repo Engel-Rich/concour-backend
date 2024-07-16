@@ -27,6 +27,12 @@ class StoreCoursRequest extends FormRequest
             'image' => 'file|mimes:jpeg,png,jpg|nullable',
             'matiere_id' => 'required|exists:matieres,id',
             'video' => 'required|file|mimes:mp4,avi,mkv',
+            'public' => 'boolean',
         ];
+    }
+    public function prepareForValidation(){
+        $this->merge([
+            'public'=> $this->public ?? false,
+        ]);
     }
 }

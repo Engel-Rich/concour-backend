@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cours extends Model
 {
-    protected $fillable = ['titre', 'resume', 'image', 'matiere_id','video'];
+    protected $fillable = ['titre', 'resume', 'image', 'matiere_id','video','public',];
     use HasFactory;
 
     public function matiere()
