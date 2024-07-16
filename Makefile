@@ -1,6 +1,10 @@
-run-app:
+start:
 	docker-compose up --build
-run-app -d:
+start -d:
 	docker-compose up --build -d
-down-app:
+stop:
 	docker-compose down
+restart:
+	docker-compose down && docker-compose up --build -d
+reset:
+	docker system prune -af

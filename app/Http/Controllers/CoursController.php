@@ -45,7 +45,7 @@ class CoursController extends ApiResponseControlller
                         }  else $cour->public = $cour->public==0? false:true;                     
                     }
                     $cour->image = $cour->image? Storage::disk('public')->url($cour->image):null;  
-                    $cour->video = Storage::disk('public')->url('Videos/'.$matiere->libelle.'/'. $cour->video);
+                    $cour->video = Storage::disk('public')->url('/Videos/'.$matiere->libelle.'/'. $cour->video);
                     return $cour;
                 });
             } else{
