@@ -27,14 +27,14 @@ class UpdateCoursRequest extends FormRequest
             'resume' => 'string',
             'image' => 'nullable|file|mimes:jpeg,png,jpg',
             'matiere_id' => 'exists:matieres,id',
-            'video' => 'nullable|file|mimes:mp4,avi,mkv|size:1000000',
-            'public' => 'boolean',
+            'video' => 'nullable|file|mimes:mp4,avi,mkv',
+            'public' => 'integer',
         ];
     }
 
     public function prepareForValidation(){
         $this->merge([
-            'public'=> $this->public ?? false,
+            'public'=> $this->public ?? 0,
         ]);
     }
 }
