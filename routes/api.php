@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 
-Route::prefix('v1')->middleware(['cors'])-> roup(function () {
+Route::prefix('v1')->middleware(['cors'])-> group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
         Route::post('/register', [App\Http\Controllers\UserController::class, 'register']);
