@@ -75,5 +75,10 @@ Route::prefix('v1')->middleware(['cors'])-> group(function () {
         Route::get('/',[App\Http\Controllers\CodesController::class, 'index'] );
         
     });
+    Route::prefix('user/manage')->group(function ()  {
+        Route::get('/',[App\Http\Controllers\UserController::class, 'index'] )->middleware('admin');
+        // Route::delete('/',[App\Http\Controllers\UserController::class, 'delete'] )->middleware('admin');
+        Route::put('/',[App\Http\Controllers\UserController::class, 'update'] )->middleware('admin');
+    });
     
 });

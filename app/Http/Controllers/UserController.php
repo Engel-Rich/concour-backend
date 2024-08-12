@@ -21,7 +21,7 @@ class UserController extends ApiResponseControlller
     public function index(Request $request)
     {
         try {
-            $this->middleware('admin');
+            assert($this->middleware('admin'));
             $userList = User::paginate(15, page: $request->page ?? 1);
             return $this->successResponse($userList);
         } catch (\Throwable $th) {
