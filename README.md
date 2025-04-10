@@ -2,6 +2,11 @@
 ```bash
 ./mvnw flyway:repair -Dflyway.url=jdbc:mysql://127.0.0.1/prepa_concours -Dflyway.user=root -Dflyway.password=root
 ```
+Or  
+```bash
+mvn flyway:repair -Dflyway.url=jdbc:mysql://127.0.0.1/prepa_concours -Dflyway.user=root -Dflyway.password=root
+```
+
 # Utils Flyway cmd
 
 ## 1. Running Migration
@@ -25,6 +30,7 @@
 ``` bash
 ./mvnw flyway:repair
 ```
+
 
 ## clean if necesaary 
  
