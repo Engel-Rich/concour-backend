@@ -17,11 +17,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 
+@Tag(name = "Users", description = "Users API")
 @RestController
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class UsersController {
    private  UserServices userServices;
    private   RulesService rulesService;
 
+   @Operation(summary = "Register a new user")
    @PostMapping("/register")
    public ResponseEntity<?> register(@RequestBody(required = true) @Valid UserFormRequest request) {
        try {
