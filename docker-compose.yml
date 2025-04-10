@@ -1,0 +1,22 @@
+services:
+
+  mysql:
+    image:                  mysql:8.0.30
+    container_name:         mysql-sa
+    restart:                always
+    volumes:
+      - ./data_db:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD:  root
+      MYSQL_DATABASE:       prepa_concours
+
+  adminer:
+    image: adminer
+    container_name: adminer_whatsapp
+    restart: always
+    ports:
+      - "8000:8080"
+    depends_on:
+      - mysql
